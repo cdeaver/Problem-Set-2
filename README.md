@@ -16,6 +16,7 @@ Six problems from the book in chapter one section three.
 
 ####Full Source Code
 [Full Code](Problem-Set-2 / source code )
+https://github.com/cdeaver/Problem-Set-2/blob/master/source%20code
 
 ###Discussion
 The purpose to these exercises are to practice working on Stacks and moving and removing Nodes inside these LinkedLists.  I wrote code for 6 methods that manipulate a Stack. 
