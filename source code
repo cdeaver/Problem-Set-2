@@ -1,0 +1,197 @@
+```
+import java.util.Iterator;
+import java.util.LinkedList;
+
+public class Stack<Item> implements Iterable<Item> {
+
+	private Node first;
+	private int N;
+
+	public class Node<Item> {
+		Item item;
+		Node next;
+	}
+
+	public boolean isEmpty() {
+		return first == null;
+	}
+
+	public int size() {
+		return N;
+	}
+
+	public void push(Item item) {
+		Node newNode = new Node();
+		newNode.item = item;
+		newNode.next = first;
+		first = newNode;
+		N++;
+	}
+
+	public Item pop() {
+		Item item = (Item) first.item;
+		first = first.next;
+		N--;
+		return item;
+	}
+
+	// 1.3.19
+	public void removeLast() {
+		Node temp = first;
+		while (temp.next.next != null) {
+			temp = temp.next;
+		}
+		N--;
+		temp.next = null;
+	}
+
+	// 1.3.20
+	public void delete(int k) {
+		if (k > N) {
+			System.out.println("Element at " + k + " does not exist.");
+		} else if (N == k) {
+			removeLast();
+		} else if (k == 1) {
+			first = first.next;
+			N--;
+		} else {
+			Node temp = first;
+			int count = 2;
+			while (count < k) {
+				temp = temp.next;
+				count++;
+			}
+			N--;
+			temp.next = temp.next.next;
+		}
+
+	}
+
+	// 1.3.21
+	public boolean find(LinkedList<Node> list, String key) {
+		Node temp = list.getFirst();
+		// checks first node
+		if (temp == null)
+			return false;
+		if (((String) temp.item).equalsIgnoreCase(key))
+			return true;
+		// checks rest of nodes in list
+		while (temp.next != null) {
+			if (((String) temp.next.item).equalsIgnoreCase(key))
+				return true;
+			temp = temp.next;
+		}
+		return false;
+	}
+
+	// 1.3.24
+	public void removeAfter(Node node) {
+		Node temp = first;
+		// argument is not null
+		if (node != null) {
+			if (first != null) {
+				// iterates to the node before node we are searching for
+				while (temp.next != null && temp.next != node) {
+					temp = temp.next;
+				}
+				// if next node is the node we are looking for
+				if (temp.next != null && temp.next == node) {
+					temp = temp.next;
+					// if node after node we are looking for has an item
+					if (temp.next != null) {
+						temp.next = null;
+					}
+				}
+			}
+		}
+	}
+
+	// 1.3.25
+	public void insertAfter(Node one, Node two) {
+		// if the arguments are not null
+		if (one != null && two != null) {
+			// if first is not one
+			if (first != one) {
+				Node temp = first;
+				while (temp.next != null && temp.next != one) {
+					temp = temp.next;
+				}
+				if (temp.next != null && temp.next == one) {
+					// temp == one
+					temp = temp.next;
+					// inserts two after one
+					if (temp.next != null) {
+						Node n1 = temp.next;
+						temp.next = two;
+						two.next = n1;
+					} else {
+						temp.next = two;
+					}
+				}
+			}
+			// if first is one
+			else {
+				// inserts two after one and connects rest of list
+				if (first.next != null) {
+					Node n1 = first.next;
+					first.next = two;
+					two.next = n1;
+				} else {
+					first.next = two;
+				}
+			}
+
+		}
+	}
+
+	// unfinished
+	// 1.3.26
+	public void remove(LinkedList<Node> list, String key) {
+		int k = list.size();
+		int i = 0;
+		Node temp = list.getFirst();
+
+		// if first is key
+		if (((String) temp.item).equalsIgnoreCase(key)) {
+			first = temp.next;
+		}
+
+		while (i < k) {
+			// if temp is key, remove and add rest of nodes again.
+			// if key is last node, just remove.
+			if (((String) temp.item).equalsIgnoreCase(key)) {
+				if (temp.next != null) {
+					Node n1 = temp.next;
+					temp = null;
+					temp = n1;
+				} else {
+					temp = null;
+				}
+			}
+			temp = temp.next;
+			i++;
+		}
+	}
+
+	public Iterator<Item> iterator() {
+		return new ListIterator();
+	}
+
+	private class ListIterator implements Iterator<Item> {
+
+		private Node current = first;
+
+		public boolean hasNext() {
+			return current != null;
+		}
+
+		public Item next() {
+			Item item = (Item) current.item;
+			current = current.next;
+			return item;
+		}
+
+	}
+
+}
+```
