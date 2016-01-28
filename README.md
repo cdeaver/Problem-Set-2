@@ -15,78 +15,181 @@ The concepts for the six problems assigned were simple to understand; however, t
 Six problems from the book in chapter one section three.
 
 ####Full Source Code
-[Full Code](https://github.com/cdeaver/Problem-Set-1/blob/master/source%20code)
+[Full Code](Problem-Set-2 / source code )
 
 ###Discussion
-The purpose of this code is to give the user the amount of rolls required to make an array of simulated percentages to get within .001 of the exact percentages given by the book.  To explain better, the book gave me code that creates an array of exact chances of landing on a number between 2-12 using two die.  I had to create my own code to create an array that also gave me these percentages, but also counted the number of rolls it took to reach these numbers.  In escence, how many times do you have to roll a pair of dice so that your simulated percentages match the exact percentages.
+The purpose to these exercises are to practice working on Stacks and moving and removing Nodes inside these LinkedLists.  I wrote code for 6 methods that manipulate a Stack. 
 
-####Testing Output
-1.The program prints the exact percentages generated
-2.The program prints the simulated percentages generated to within .001 of exact
-3.The program prints the number of times required to roll a pair of dice for this to happen
+###Removes the last node in the stack
 
-####Partial Testing Code
+####1.3.19 Testing Code
 ```javascript
-public static void main(String[] args) {
-    System.out.println("Exact: ");
-    int sides = 6;
-    double[] dist = new double[2 * sides + 1];
-    for (int i = 1; i <= sides; i++)
-	    for (int j = 1; j <= sides; j++)
-		    dist[i + j] += 1.0;
-    for (int k = 2; k <= sides * 2; k++) {
-      dist[k] /= 36.0;
-      System.out.println(dist[k]);
-    }
-    System.out.println();
-    System.out.println("Simulated:");
-    int rolls = 0;
-    double[] simDist = new double[13];
-    double[] simProbability = new double[13];
-    while (!withinLimit(dist, simProbability)) {
-     int result = rollDice();
-     rolls++;
-     simDist[result] += 1.0;
-     for (int i = 2; i < simDist.length; i++) {
-	  simProbability[i] = simDist[i] / rolls;
-     }
-     }
-     for(int i = 2; i < simProbability.length;i++){
-       System.out.println(simProbability[i]);
-     }
-     System.out.println();
-     System.out.println("It took " + rolls + " rolls to get desired result");
-}
-```
-####Testing Output
-```javascript
-Exact: 
-0.027777777777777776
-0.05555555555555555
-0.08333333333333333
-0.1111111111111111
-0.1388888888888889
-0.16666666666666666
-0.1388888888888889
-0.1111111111111111
-0.08333333333333333
-0.05555555555555555
-0.027777777777777776
-
-Simulated:
-0.02771339438966636
-0.05599057844820026
-0.08298983925730108
-0.11066564766904294
-0.13928110552889736
-0.16757081824673942
-0.13789042434569077
-0.11018955861533257
-0.08418006189157698
-0.05548943207587356
-0.028039139531678716
-
-It took 79817 rolls to get desired result
+// 1.3.19
+	public void removeLast() {
+		Node temp = first;
+		while (temp.next.next != null) {
+			temp = temp.next;
+		}
+		N--;
+		temp.next = null;
+	}
 
 ```
-The number of rolls changes every time you run the program. 
+
+###Deletes the kth term in stack
+
+####1.3.20 Testing Code 
+```javascript
+// 1.3.20
+	public void delete(int k) {
+		if (k > N) {
+			System.out.println("Element at " + k + " does not exist.");
+		} else if (N == k) {
+			removeLast();
+		} else if (k == 1) {
+			first = first.next;
+			N--;
+		} else {
+			Node temp = first;
+			int count = 2;
+			while (count < k) {
+				temp = temp.next;
+				count++;
+			}
+			N--;
+			temp.next = temp.next.next;
+		}
+
+	}
+```
+ 
+###Finds the kth term in a stack
+
+####1.3.21 Testing Code 
+```javascript
+// 1.3.21
+	public boolean find(LinkedList<Node> list, String key) {
+		Node temp = list.getFirst();
+		// checks first node
+		if (temp == null)
+			return false;
+		if (((String) temp.item).equalsIgnoreCase(key))
+			return true;
+		// checks rest of nodes in list
+		while (temp.next != null) {
+			if (((String) temp.next.item).equalsIgnoreCase(key))
+				return true;
+			temp = temp.next;
+		}
+		return false;
+	}
+```
+ 
+###Removes the node after the given node
+######This method removes the Node after the given Node and does nothing if 
+######*argument is null 
+######*there is no Node after given Node
+
+####1.3.24 Testing Code 
+```javascript
+// 1.3.24
+	public void removeAfter(Node node) {
+		Node temp = first;
+		// argument is not null
+		if (node != null) {
+			if (first != null) {
+				// iterates to the node before node we are searching for
+				while (temp.next != null && temp.next != node) {
+					temp = temp.next;
+					N--;
+				}
+				// if next node is the node we are looking for
+				if (temp.next != null && temp.next == node) {
+					temp = temp.next;
+					// if node after node we are looking for has an item
+					if (temp.next != null) {
+						temp.next = null;
+					}
+				}
+			}
+		}
+	}
+```
+
+###Method insertAfter
+######Given two Nodes, this method goes through the Stack and finds the first given node and inserts the second given node after the first.  If either are null, then this method does nothing.  Then the code checks every node in the stack to see if the first given node is in the list.  If it is, then the node is inserted and any nodes originally connected after the first given node are then linked to the inserted node.
+
+####1.3.25 Testing Code 
+```javascript
+// 1.3.25
+	public void insertAfter(Node one, Node two) {
+		// if the arguments are not null
+		if (one != null && two != null) {
+			// if first is not one
+			if (first != one) {
+				Node temp = first;
+				while (temp.next != null && temp.next != one) {
+					temp = temp.next;
+					N--;
+				}
+				if (temp.next != null && temp.next == one) {
+					// temp == one
+					temp = temp.next;
+					// inserts two after one
+					if (temp.next != null) {
+						Node n1 = temp.next;
+						temp.next = two;
+						two.next = n1;
+					} else {
+						temp.next = two;
+					}
+				}
+			}
+			// if first is one
+			else {
+				// inserts two after one and connects rest of list
+				if (first.next != null) {
+					Node n1 = first.next;
+					first.next = two;
+					two.next = n1;
+				} else {
+					first.next = two;
+				}
+			}
+
+		}
+	}
+```
+
+###Method remove
+######Given a list and a key, you search for any and all nodes that match the key.  You then remove the nodes from the list while keeping it intact, as in just remove the one node not all the ones after it.
+
+####1.3.26 Testing Code 
+```javascript
+// 1.3.26
+	public void remove(LinkedList<Node> list, String key) {
+		int k = list.size();
+		Node temp = list.getFirst();
+
+		// if first is key
+		if (((String) temp.item).equalsIgnoreCase(key)) {
+			first = temp.next;
+		}
+
+		while (N < k) {
+			// if temp is key, remove and add rest of nodes again.
+			// if key is last node, just remove.
+			if (((String) temp.item).equalsIgnoreCase(key)) {
+				if (temp.next != null) {
+					Node n1 = temp.next;
+					temp = null;
+					temp = n1;
+				} else {
+					temp = null;
+				}
+			}
+			temp = temp.next;
+			N++;
+		}
+	}
+```
