@@ -1,4 +1,4 @@
-```
+//Tradd Deaver
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -93,6 +93,7 @@ public class Stack<Item> implements Iterable<Item> {
 				// iterates to the node before node we are searching for
 				while (temp.next != null && temp.next != node) {
 					temp = temp.next;
+					N--;
 				}
 				// if next node is the node we are looking for
 				if (temp.next != null && temp.next == node) {
@@ -115,6 +116,7 @@ public class Stack<Item> implements Iterable<Item> {
 				Node temp = first;
 				while (temp.next != null && temp.next != one) {
 					temp = temp.next;
+					N--;
 				}
 				if (temp.next != null && temp.next == one) {
 					// temp == one
@@ -144,11 +146,9 @@ public class Stack<Item> implements Iterable<Item> {
 		}
 	}
 
-	// unfinished
 	// 1.3.26
 	public void remove(LinkedList<Node> list, String key) {
 		int k = list.size();
-		int i = 0;
 		Node temp = list.getFirst();
 
 		// if first is key
@@ -156,7 +156,7 @@ public class Stack<Item> implements Iterable<Item> {
 			first = temp.next;
 		}
 
-		while (i < k) {
+		while (N < k) {
 			// if temp is key, remove and add rest of nodes again.
 			// if key is last node, just remove.
 			if (((String) temp.item).equalsIgnoreCase(key)) {
@@ -169,7 +169,7 @@ public class Stack<Item> implements Iterable<Item> {
 				}
 			}
 			temp = temp.next;
-			i++;
+			N++;
 		}
 	}
 
@@ -194,4 +194,3 @@ public class Stack<Item> implements Iterable<Item> {
 	}
 
 }
-```
